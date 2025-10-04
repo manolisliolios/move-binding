@@ -3,7 +3,7 @@ source: move-binding/tests/snapshot_tests.rs
 expression: pretty
 ---
 pub mod bridge {
-    pub const PACKAGE_VERSION: u64 = 5u64;
+    pub const PACKAGE_VERSION: u64 = 6u64;
     pub mod bridge {
         use std::str::FromStr;
         use move_binding_derive::{MoveStruct, Key};

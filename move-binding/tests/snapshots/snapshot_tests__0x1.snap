@@ -3,7 +3,7 @@ source: move-binding/tests/snapshot_tests.rs
 expression: pretty
 ---
 pub mod move_lib {
-    pub const PACKAGE_VERSION: u64 = 16u64;
+    pub const PACKAGE_VERSION: u64 = 19u64;
     pub mod address {
         use std::str::FromStr;
         use move_binding_derive::{MoveStruct, Key};
@@ -1545,6 +1545,40 @@ pub mod move_lib {
                 0u8, 0u8, 0u8, 1u8,
             ]);
         }
+        pub fn address_string<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, String>,
+        ) -> Arg<String> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("address_string").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn as_string<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, String>,
+        ) -> Ref<'a, String> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("as_string").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
         pub fn borrow_string<'a>(
             builder: &mut sui_transaction_builder::TransactionBuilder,
             p0: Ref<'a, String>,
@@ -1559,6 +1593,21 @@ pub mod move_lib {
                         vec![],
                     ),
                     vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn defining_id<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+        ) -> Arg<Address> {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("defining_id").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![],
                 )
                 .into()
         }
@@ -1657,6 +1706,68 @@ pub mod move_lib {
                         vec![],
                     ),
                     vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn module_string<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, String>,
+        ) -> Arg<String> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("module_string").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn original_id<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+        ) -> Arg<Address> {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("original_id").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![],
+                )
+                .into()
+        }
+        pub fn with_defining_ids<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+        ) -> Arg<String> {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("with_defining_ids").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![],
+                )
+                .into()
+        }
+        pub fn with_original_ids<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+        ) -> Arg<String> {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("with_original_ids").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![],
                 )
                 .into()
         }
@@ -3741,6 +3852,25 @@ pub mod move_lib {
                 )
                 .into()
         }
+        pub fn skip<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<Vec<T0>>,
+            p1: Arg<u64>,
+        ) -> Arg<Vec<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("skip").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
         pub fn swap<'a, T0: MoveType>(
             builder: &mut sui_transaction_builder::TransactionBuilder,
             p0: MutRef<'a, Vec<T0>>,
@@ -3774,6 +3904,25 @@ pub mod move_lib {
                         PACKAGE_ID,
                         Identifier::from_str(MODULE_NAME).unwrap(),
                         Identifier::from_str("swap_remove").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn take<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<Vec<T0>>,
+            p1: Arg<u64>,
+        ) -> Arg<Vec<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("take").unwrap(),
                         vec![T0::type_()],
                     ),
                     vec![p0.into(), p1.into()],

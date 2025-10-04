@@ -3,7 +3,621 @@ source: move-binding/tests/snapshot_tests.rs
 expression: pretty
 ---
 pub mod sui {
-    pub const PACKAGE_VERSION: u64 = 35u64;
+    pub const PACKAGE_VERSION: u64 = 42u64;
+    pub mod accumulator {
+        use std::str::FromStr;
+        use move_binding_derive::{MoveStruct, Key};
+        use move_types::{MoveType, Address, Identifier, ObjectId};
+        use move_types::functions::{Arg, Ref, MutRef};
+        pub const PACKAGE_ID: Address = Address::new([
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+            0u8, 2u8,
+        ]);
+        pub const MODULE_NAME: &str = "accumulator";
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct, Key)]
+        pub struct AccumulatorRoot {
+            pub id: ObjectId,
+        }
+        impl AccumulatorRoot {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub struct Key<T0> {
+            pub address: Address,
+            phantom_data_0: std::marker::PhantomData<T0>,
+        }
+        impl<T0> Key<T0> {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub struct U128 {
+            pub value: u128,
+        }
+        impl U128 {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        pub fn accumulator_address<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<Address>,
+        ) -> Arg<Address> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("accumulator_address").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn accumulator_key<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<Address>,
+        ) -> Arg<crate::sui::accumulator::Key<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("accumulator_key").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn create<'a>(builder: &mut sui_transaction_builder::TransactionBuilder) {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("create").unwrap(),
+                        vec![],
+                    ),
+                    vec![],
+                );
+        }
+        pub fn create_u128(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<u128>,
+        ) -> Arg<crate::sui::accumulator::U128> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("create_u128").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn destroy_u128(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<crate::sui::accumulator::U128>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("destroy_u128").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                );
+        }
+        pub fn emit_deposit_event<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<Address>,
+            p1: Arg<Address>,
+            p2: Arg<u64>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("emit_deposit_event").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into(), p2.into()],
+                );
+        }
+        pub fn emit_withdraw_event<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<Address>,
+            p1: Arg<Address>,
+            p2: Arg<u64>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("emit_withdraw_event").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into(), p2.into()],
+                );
+        }
+        pub fn is_zero_u128<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::accumulator::U128>,
+        ) -> Arg<bool> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("is_zero_u128").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn root_add_accumulator<'a, T0: MoveType, T1: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::accumulator::AccumulatorRoot>,
+            p1: Arg<crate::sui::accumulator::Key<T0>>,
+            p2: Arg<T1>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("root_add_accumulator").unwrap(),
+                        vec![T0::type_(), T1::type_()],
+                    ),
+                    vec![p0.into(), p1.into(), p2.into()],
+                );
+        }
+        pub fn root_borrow_accumulator_mut<'a, T0: MoveType, T1: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::accumulator::AccumulatorRoot>,
+            p1: Arg<crate::sui::accumulator::Key<T0>>,
+        ) -> MutRef<'a, T1> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("root_borrow_accumulator_mut").unwrap(),
+                        vec![T0::type_(), T1::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn root_has_accumulator<'a, T0: MoveType, T1: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::accumulator::AccumulatorRoot>,
+            p1: Arg<crate::sui::accumulator::Key<T0>>,
+        ) -> Arg<bool> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("root_has_accumulator").unwrap(),
+                        vec![T0::type_(), T1::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn root_id<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::accumulator::AccumulatorRoot>,
+        ) -> Ref<'a, ObjectId> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("root_id").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn root_id_mut<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::accumulator::AccumulatorRoot>,
+        ) -> MutRef<'a, ObjectId> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("root_id_mut").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn root_remove_accumulator<'a, T0: MoveType, T1: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::accumulator::AccumulatorRoot>,
+            p1: Arg<crate::sui::accumulator::Key<T0>>,
+        ) -> Arg<T1> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("root_remove_accumulator").unwrap(),
+                        vec![T0::type_(), T1::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn update_u128<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::accumulator::U128>,
+            p1: Arg<u128>,
+            p2: Arg<u128>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("update_u128").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into(), p1.into(), p2.into()],
+                );
+        }
+    }
+    pub mod accumulator_metadata {
+        use std::str::FromStr;
+        use move_binding_derive::{MoveStruct, Key};
+        use move_types::{MoveType, Address, Identifier, ObjectId};
+        use move_types::functions::{Arg, Ref, MutRef};
+        pub const PACKAGE_ID: Address = Address::new([
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+            0u8, 2u8,
+        ]);
+        pub const MODULE_NAME: &str = "accumulator_metadata";
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub struct Metadata<T0> {
+            pub fields: crate::sui::bag::Bag,
+            phantom_data_0: std::marker::PhantomData<T0>,
+        }
+        impl<T0> Metadata<T0> {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub struct MetadataKey<T0> {
+            pub dummy_field: bool,
+            phantom_data_0: std::marker::PhantomData<T0>,
+        }
+        impl<T0> MetadataKey<T0> {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub struct Owner {
+            pub balances: crate::sui::bag::Bag,
+            pub owner: Address,
+        }
+        impl Owner {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub struct OwnerKey {
+            pub owner: Address,
+        }
+        impl OwnerKey {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        pub fn accumulator_owner_attach_metadata<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::accumulator_metadata::Owner>,
+            p1: Arg<crate::sui::accumulator_metadata::Metadata<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("accumulator_owner_attach_metadata")
+                            .unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn accumulator_owner_destroy(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<crate::sui::accumulator_metadata::Owner>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("accumulator_owner_destroy").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                );
+        }
+        pub fn accumulator_owner_detach_metadata<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::accumulator_metadata::Owner>,
+        ) -> Arg<crate::sui::accumulator_metadata::Metadata<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("accumulator_owner_detach_metadata")
+                            .unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn accumulator_root_attach_owner<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::accumulator::AccumulatorRoot>,
+            p1: Arg<crate::sui::accumulator_metadata::Owner>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("accumulator_root_attach_owner").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn accumulator_root_borrow_owner_mut<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::accumulator::AccumulatorRoot>,
+            p1: Arg<Address>,
+        ) -> MutRef<'a, crate::sui::accumulator_metadata::Owner> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("accumulator_root_borrow_owner_mut")
+                            .unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn accumulator_root_detach_owner<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::accumulator::AccumulatorRoot>,
+            p1: Arg<Address>,
+        ) -> Arg<crate::sui::accumulator_metadata::Owner> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("accumulator_root_detach_owner").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn accumulator_root_owner_exists<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::accumulator::AccumulatorRoot>,
+            p1: Arg<Address>,
+        ) -> Arg<bool> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("accumulator_root_owner_exists").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn create_accumulator_metadata<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::accumulator::AccumulatorRoot>,
+            p1: Arg<Address>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("create_accumulator_metadata").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn remove_accumulator_metadata<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::accumulator::AccumulatorRoot>,
+            p1: Arg<Address>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("remove_accumulator_metadata").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+    }
+    pub mod accumulator_settlement {
+        use std::str::FromStr;
+        use move_binding_derive::{MoveStruct, Key};
+        use move_types::{MoveType, Address, Identifier, ObjectId};
+        use move_types::functions::{Arg, Ref, MutRef};
+        pub const PACKAGE_ID: Address = Address::new([
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+            0u8, 2u8,
+        ]);
+        pub const MODULE_NAME: &str = "accumulator_settlement";
+        pub fn record_settlement_sui_conservation(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<u64>,
+            p1: Arg<u64>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("record_settlement_sui_conservation")
+                            .unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn settle_u128<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::accumulator::AccumulatorRoot>,
+            p1: Arg<Address>,
+            p2: Arg<u128>,
+            p3: Arg<u128>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            let p3 = p3.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("settle_u128").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into(), p2.into(), p3.into()],
+                );
+        }
+        pub fn settlement_prologue<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<u64>,
+            p1: Arg<u64>,
+            p2: Arg<u64>,
+            p3: Arg<u64>,
+            p4: Arg<u64>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            let p3 = p3.resolve_arg(builder);
+            let p4 = p4.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("settlement_prologue").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into(), p1.into(), p2.into(), p3.into(), p4.into()],
+                );
+        }
+    }
     pub mod address {
         use std::str::FromStr;
         use move_binding_derive::{MoveStruct, Key};
@@ -757,6 +1371,21 @@ pub mod sui {
                 )
                 .into()
         }
+        pub fn create_supply_internal<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+        ) -> Arg<crate::sui::balance::Supply<T0>> {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("create_supply_internal").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![],
+                )
+                .into()
+        }
         pub fn decrease_supply<'a, T0: MoveType>(
             builder: &mut sui_transaction_builder::TransactionBuilder,
             p0: MutRef<'a, crate::sui::balance::Supply<T0>>,
@@ -863,6 +1492,63 @@ pub mod sui {
                 )
                 .into()
         }
+        pub fn redeem_funds<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<
+                crate::sui::funds_accumulator::Withdrawal<
+                    crate::sui::balance::Balance<T0>,
+                >,
+            >,
+        ) -> Arg<crate::sui::balance::Balance<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("redeem_funds").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn send_funds<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<crate::sui::balance::Balance<T0>>,
+            p1: Arg<Address>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("send_funds").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn send_to_account<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<crate::sui::balance::Balance<T0>>,
+            p1: Arg<Address>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("send_to_account").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
         pub fn split<'a, T0: MoveType>(
             builder: &mut sui_transaction_builder::TransactionBuilder,
             p0: MutRef<'a, crate::sui::balance::Balance<T0>>,
@@ -930,6 +1616,44 @@ pub mod sui {
                         vec![T0::type_()],
                     ),
                     vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn withdraw_from_account<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<u64>,
+        ) -> Arg<crate::sui::balance::Balance<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("withdraw_from_account").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn withdraw_funds_from_object<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, ObjectId>,
+            p1: Arg<u64>,
+        ) -> Arg<
+            crate::sui::funds_accumulator::Withdrawal<crate::sui::balance::Balance<T0>>,
+        > {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("withdraw_funds_from_object").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
                 )
                 .into()
         }
@@ -2605,6 +3329,23 @@ pub mod sui {
                 0u8, 0u8, 0u8, 2u8,
             ]);
         }
+        pub fn allow_global_pause<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin::DenyCapV2<T0>>,
+        ) -> Arg<bool> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("allow_global_pause").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
         pub fn balance<'a, T0: MoveType>(
             builder: &mut sui_transaction_builder::TransactionBuilder,
             p0: Ref<'a, crate::sui::coin::Coin<T0>>,
@@ -2745,6 +3486,23 @@ pub mod sui {
                         p0.into(), p1.into(), p2.into(), p3.into(), p4.into(), p5.into(),
                         p6.into()
                     ],
+                )
+                .into()
+        }
+        pub fn deny_cap_id<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin::RegulatedCoinMetadata<T0>>,
+        ) -> Arg<ObjectId> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("deny_cap_id").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
                 )
                 .into()
         }
@@ -2963,6 +3721,22 @@ pub mod sui {
                         vec![T0::type_()],
                     ),
                     vec![p0.into(), p1.into(), p2.into()],
+                );
+        }
+        pub fn destroy_metadata<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<crate::sui::coin::CoinMetadata<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("destroy_metadata").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
                 );
         }
         pub fn destroy_zero<T0: MoveType>(
@@ -3214,6 +3988,38 @@ pub mod sui {
                         vec![T0::type_()],
                     ),
                     vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn new_deny_cap_v2<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<bool>,
+        ) -> Arg<crate::sui::coin::DenyCapV2<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("new_deny_cap_v2").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn new_treasury_cap<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+        ) -> Arg<crate::sui::coin::TreasuryCap<T0>> {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("new_treasury_cap").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![],
                 )
                 .into()
         }
@@ -3469,6 +4275,838 @@ pub mod sui {
                     vec![],
                 )
                 .into()
+        }
+    }
+    pub mod coin_registry {
+        use std::str::FromStr;
+        use move_binding_derive::{MoveStruct, Key};
+        use move_types::{MoveType, Address, Identifier, ObjectId};
+        use move_types::functions::{Arg, Ref, MutRef};
+        pub const PACKAGE_ID: Address = Address::new([
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+            0u8, 2u8,
+        ]);
+        pub const MODULE_NAME: &str = "coin_registry";
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct, Key)]
+        pub struct CoinRegistry {
+            pub id: ObjectId,
+        }
+        impl CoinRegistry {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct, Key)]
+        pub struct Currency<T0> {
+            pub id: ObjectId,
+            pub decimals: u8,
+            pub name: String,
+            pub symbol: String,
+            pub description: String,
+            pub icon_url: String,
+            pub supply: Option<crate::sui::coin_registry::SupplyState<T0>>,
+            pub regulated: crate::sui::coin_registry::RegulatedState,
+            pub treasury_cap_id: Option<ObjectId>,
+            pub metadata_cap_id: crate::sui::coin_registry::MetadataCapState,
+            pub extra_fields: crate::sui::vec_map::VecMap<
+                String,
+                crate::sui::coin_registry::ExtraField,
+            >,
+            phantom_data_0: std::marker::PhantomData<T0>,
+        }
+        impl<T0> Currency<T0> {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub struct CurrencyInitializer<T0> {
+            pub currency: crate::sui::coin_registry::Currency<T0>,
+            pub extra_fields: crate::sui::bag::Bag,
+            pub is_otw: bool,
+            phantom_data_0: std::marker::PhantomData<T0>,
+        }
+        impl<T0> CurrencyInitializer<T0> {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub struct CurrencyKey<T0> {
+            pub dummy_field: bool,
+            phantom_data_0: std::marker::PhantomData<T0>,
+        }
+        impl<T0> CurrencyKey<T0> {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub struct ExtraField {
+            pub pos0: String,
+            pub pos1: Vec<u8>,
+        }
+        impl ExtraField {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct, Key)]
+        pub struct MetadataCap<T0> {
+            pub id: ObjectId,
+            phantom_data_0: std::marker::PhantomData<T0>,
+        }
+        impl<T0> MetadataCap<T0> {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub enum MetadataCapState {
+            Claimed(ObjectId),
+            Unclaimed,
+            Deleted,
+        }
+        impl MetadataCapState {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub enum RegulatedState {
+            Regulated { cap: ObjectId, allow_global_pause: Option<bool>, variant: u8 },
+            Unregulated,
+            Unknown,
+        }
+        impl RegulatedState {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub enum SupplyState<T0> {
+            Fixed(crate::sui::balance::Supply<T0>),
+            BurnOnly(crate::sui::balance::Supply<T0>),
+            Unknown,
+        }
+        impl<T0> SupplyState<T0> {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        pub fn burn<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Arg<crate::sui::coin::Coin<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("burn").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn burn_balance<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Arg<crate::sui::balance::Balance<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("burn_balance").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn claim_metadata_cap<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Ref<'a, crate::sui::coin::TreasuryCap<T0>>,
+        ) -> Arg<crate::sui::coin_registry::MetadataCap<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("claim_metadata_cap").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn create<'a>(builder: &mut sui_transaction_builder::TransactionBuilder) {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("create").unwrap(),
+                        vec![],
+                    ),
+                    vec![],
+                );
+        }
+        pub fn decimals<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<u8> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("decimals").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn delete_metadata_cap<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Arg<crate::sui::coin_registry::MetadataCap<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("delete_metadata_cap").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn delete_migrated_legacy_metadata<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Arg<crate::sui::coin::CoinMetadata<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("delete_migrated_legacy_metadata").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn deny_cap_id<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<Option<ObjectId>> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("deny_cap_id").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn description<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<String> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("description").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn exists<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::CoinRegistry>,
+        ) -> Arg<bool> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("exists").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn finalize<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<crate::sui::coin_registry::CurrencyInitializer<T0>>,
+        ) -> Arg<crate::sui::coin_registry::MetadataCap<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("finalize").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn finalize_registration<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::CoinRegistry>,
+            p1: Arg<
+                crate::sui::transfer::Receiving<crate::sui::coin_registry::Currency<T0>>,
+            >,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("finalize_registration").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn icon_url<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<String> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("icon_url").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn is_metadata_cap_claimed<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<bool> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("is_metadata_cap_claimed").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn is_metadata_cap_deleted<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<bool> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("is_metadata_cap_deleted").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn is_regulated<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<bool> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("is_regulated").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn is_supply_burn_only<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<bool> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("is_supply_burn_only").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn is_supply_fixed<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<bool> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("is_supply_fixed").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn make_regulated<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::CurrencyInitializer<T0>>,
+            p1: Arg<bool>,
+        ) -> Arg<crate::sui::coin::DenyCapV2<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("make_regulated").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn make_supply_burn_only<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Arg<crate::sui::coin::TreasuryCap<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("make_supply_burn_only").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn make_supply_burn_only_init<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::CurrencyInitializer<T0>>,
+            p1: Arg<crate::sui::coin::TreasuryCap<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("make_supply_burn_only_init").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn make_supply_fixed<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Arg<crate::sui::coin::TreasuryCap<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("make_supply_fixed").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn make_supply_fixed_init<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::CurrencyInitializer<T0>>,
+            p1: Arg<crate::sui::coin::TreasuryCap<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("make_supply_fixed_init").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn metadata_cap_id<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<Option<ObjectId>> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("metadata_cap_id").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn migrate_legacy_metadata<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::CoinRegistry>,
+            p1: Ref<'a, crate::sui::coin::CoinMetadata<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("migrate_legacy_metadata").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn migrate_regulated_state_by_cap<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Ref<'a, crate::sui::coin::DenyCapV2<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("migrate_regulated_state_by_cap").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn migrate_regulated_state_by_metadata<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Ref<'a, crate::sui::coin::RegulatedCoinMetadata<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("migrate_regulated_state_by_metadata")
+                            .unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn name<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<String> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("name").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn new_currency<'a, T0: move_types::Key>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::CoinRegistry>,
+            p1: Arg<u8>,
+            p2: Arg<String>,
+            p3: Arg<String>,
+            p4: Arg<String>,
+            p5: Arg<String>,
+        ) -> Arg<crate::sui::coin_registry::CurrencyInitializer<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            let p3 = p3.resolve_arg(builder);
+            let p4 = p4.resolve_arg(builder);
+            let p5 = p5.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("new_currency").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![
+                        p0.into(), p1.into(), p2.into(), p3.into(), p4.into(), p5.into()
+                    ],
+                )
+                .into()
+        }
+        pub fn new_currency_with_otw<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<T0>,
+            p1: Arg<u8>,
+            p2: Arg<String>,
+            p3: Arg<String>,
+            p4: Arg<String>,
+            p5: Arg<String>,
+        ) -> Arg<crate::sui::coin_registry::CurrencyInitializer<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            let p3 = p3.resolve_arg(builder);
+            let p4 = p4.resolve_arg(builder);
+            let p5 = p5.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("new_currency_with_otw").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![
+                        p0.into(), p1.into(), p2.into(), p3.into(), p4.into(), p5.into()
+                    ],
+                )
+                .into()
+        }
+        pub fn set_description<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Ref<'a, crate::sui::coin_registry::MetadataCap<T0>>,
+            p2: Arg<String>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("set_description").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into(), p2.into()],
+                );
+        }
+        pub fn set_icon_url<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Ref<'a, crate::sui::coin_registry::MetadataCap<T0>>,
+            p2: Arg<String>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("set_icon_url").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into(), p2.into()],
+                );
+        }
+        pub fn set_name<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Ref<'a, crate::sui::coin_registry::MetadataCap<T0>>,
+            p2: Arg<String>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("set_name").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into(), p2.into()],
+                );
+        }
+        pub fn set_treasury_cap_id<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Ref<'a, crate::sui::coin::TreasuryCap<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("set_treasury_cap_id").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn symbol<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<String> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("symbol").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn total_supply<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<Option<u64>> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("total_supply").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn treasury_cap_id<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::coin_registry::Currency<T0>>,
+        ) -> Arg<Option<ObjectId>> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("treasury_cap_id").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn update_from_legacy_metadata<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::coin_registry::Currency<T0>>,
+            p1: Ref<'a, crate::sui::coin::CoinMetadata<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("update_from_legacy_metadata").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
         }
     }
     pub mod config {
@@ -4272,6 +5910,108 @@ pub mod sui {
                     ),
                     vec![p0.into(), p1.into(), p2.into(), p3.into()],
                 );
+        }
+    }
+    pub mod derived_object {
+        use std::str::FromStr;
+        use move_binding_derive::{MoveStruct, Key};
+        use move_types::{MoveType, Address, Identifier, ObjectId};
+        use move_types::functions::{Arg, Ref, MutRef};
+        pub const PACKAGE_ID: Address = Address::new([
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+            0u8, 2u8,
+        ]);
+        pub const MODULE_NAME: &str = "derived_object";
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub struct Claimed {
+            pub pos0: ObjectId,
+        }
+        impl Claimed {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub struct DerivedObjectKey<T0> {
+            pub pos0: T0,
+        }
+        impl<T0> DerivedObjectKey<T0> {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub enum ClaimedStatus {
+            Reserved,
+        }
+        impl ClaimedStatus {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        pub fn claim<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, ObjectId>,
+            p1: Arg<T0>,
+        ) -> Arg<ObjectId> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("claim").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn derive_address<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<ObjectId>,
+            p1: Arg<T0>,
+        ) -> Arg<Address> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("derive_address").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn exists<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, ObjectId>,
+            p1: Arg<T0>,
+        ) -> Arg<bool> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("exists").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
         }
     }
     pub mod display {
@@ -5365,6 +7105,236 @@ pub mod sui {
                     ),
                     vec![p0.into()],
                 );
+        }
+    }
+    pub mod funds_accumulator {
+        use std::str::FromStr;
+        use move_binding_derive::{MoveStruct, Key};
+        use move_types::{MoveType, Address, Identifier, ObjectId};
+        use move_types::functions::{Arg, Ref, MutRef};
+        pub const PACKAGE_ID: Address = Address::new([
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+            0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+            0u8, 2u8,
+        ]);
+        pub const MODULE_NAME: &str = "funds_accumulator";
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub struct Withdrawal<T0> {
+            pub owner: Address,
+            pub limit: move_types::U256,
+            phantom_data_0: std::marker::PhantomData<T0>,
+        }
+        impl<T0> Withdrawal<T0> {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 2u8,
+            ]);
+        }
+        pub fn add_impl<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<T0>,
+            p1: Arg<Address>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("add_impl").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn add_to_accumulator_address<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<Address>,
+            p1: Arg<Address>,
+            p2: Arg<T0>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("add_to_accumulator_address").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into(), p2.into()],
+                );
+        }
+        pub fn create_withdrawal<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<Address>,
+            p1: Arg<move_types::U256>,
+        ) -> Arg<crate::sui::funds_accumulator::Withdrawal<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("create_withdrawal").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn redeem<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<crate::sui::funds_accumulator::Withdrawal<T0>>,
+        ) -> Arg<T0> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("redeem").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn withdraw_from_accumulator_address<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<Address>,
+            p1: Arg<Address>,
+            p2: Arg<move_types::U256>,
+        ) -> Arg<T0> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("withdraw_from_accumulator_address")
+                            .unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into(), p2.into()],
+                )
+                .into()
+        }
+        pub fn withdraw_from_object<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, ObjectId>,
+            p1: Arg<move_types::U256>,
+        ) -> Arg<crate::sui::funds_accumulator::Withdrawal<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("withdraw_from_object").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn withdraw_impl<T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Arg<Address>,
+            p1: Arg<move_types::U256>,
+        ) -> Arg<T0> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("withdraw_impl").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn withdrawal_join<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::funds_accumulator::Withdrawal<T0>>,
+            p1: Arg<crate::sui::funds_accumulator::Withdrawal<T0>>,
+        ) {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("withdrawal_join").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                );
+        }
+        pub fn withdrawal_limit<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::funds_accumulator::Withdrawal<T0>>,
+        ) -> Arg<move_types::U256> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("withdrawal_limit").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn withdrawal_owner<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::funds_accumulator::Withdrawal<T0>>,
+        ) -> Arg<Address> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("withdrawal_owner").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn withdrawal_split<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui::funds_accumulator::Withdrawal<T0>>,
+            p1: Arg<move_types::U256>,
+        ) -> Arg<crate::sui::funds_accumulator::Withdrawal<T0>> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("withdrawal_split").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
         }
     }
     pub mod groth16 {
@@ -8508,6 +10478,66 @@ pub mod sui {
                     ),
                     vec![p0.into()],
                 );
+        }
+        pub fn sui_accumulator_root_address(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+        ) -> Arg<Address> {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("sui_accumulator_root_address").unwrap(),
+                        vec![],
+                    ),
+                    vec![],
+                )
+                .into()
+        }
+        pub fn sui_accumulator_root_object_id(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+        ) -> Arg<ObjectId> {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("sui_accumulator_root_object_id").unwrap(),
+                        vec![],
+                    ),
+                    vec![],
+                )
+                .into()
+        }
+        pub fn sui_coin_registry_address(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+        ) -> Arg<Address> {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("sui_coin_registry_address").unwrap(),
+                        vec![],
+                    ),
+                    vec![],
+                )
+                .into()
+        }
+        pub fn sui_coin_registry_object_id(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+        ) -> Arg<ObjectId> {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("sui_coin_registry_object_id").unwrap(),
+                        vec![],
+                    ),
+                    vec![],
+                )
+                .into()
         }
         pub fn sui_deny_list_object_id(
             builder: &mut sui_transaction_builder::TransactionBuilder,
@@ -12669,7 +14699,7 @@ pub mod sui {
                 )
                 .into()
         }
-        pub fn ids_created<'a>(
+        pub fn gas_price<'a>(
             builder: &mut sui_transaction_builder::TransactionBuilder,
         ) -> Arg<u64> {
             builder
@@ -12677,7 +14707,7 @@ pub mod sui {
                     sui_transaction_builder::Function::new(
                         PACKAGE_ID,
                         Identifier::from_str(MODULE_NAME).unwrap(),
-                        Identifier::from_str("ids_created").unwrap(),
+                        Identifier::from_str("gas_price").unwrap(),
                         vec![],
                     ),
                     vec![],
@@ -12759,6 +14789,21 @@ pub mod sui {
                 )
                 .into()
         }
+        pub fn native_rgp(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+        ) -> Arg<u64> {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("native_rgp").unwrap(),
+                        vec![],
+                    ),
+                    vec![],
+                )
+                .into()
+        }
         pub fn native_sender(
             builder: &mut sui_transaction_builder::TransactionBuilder,
         ) -> Arg<Address> {
@@ -12798,6 +14843,21 @@ pub mod sui {
                         PACKAGE_ID,
                         Identifier::from_str(MODULE_NAME).unwrap(),
                         Identifier::from_str("option_sponsor").unwrap(),
+                        vec![],
+                    ),
+                    vec![],
+                )
+                .into()
+        }
+        pub fn reference_gas_price<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+        ) -> Arg<u64> {
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("reference_gas_price").unwrap(),
                         vec![],
                     ),
                     vec![],
@@ -13336,6 +15396,23 @@ pub mod sui {
                 )
                 .into()
         }
+        pub fn length<'a, T0: MoveType, T1: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::vec_map::VecMap<T0, T1>>,
+        ) -> Arg<u64> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("length").unwrap(),
+                        vec![T0::type_(), T1::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
         pub fn pop<'a, T0: MoveType, T1: MoveType>(
             builder: &mut sui_transaction_builder::TransactionBuilder,
             p0: MutRef<'a, crate::sui::vec_map::VecMap<T0, T1>>,
@@ -13501,44 +15578,6 @@ pub mod sui {
                 )
                 .into()
         }
-        pub fn get_idx<'a, T0: MoveType>(
-            builder: &mut sui_transaction_builder::TransactionBuilder,
-            p0: Ref<'a, crate::sui::vec_set::VecSet<T0>>,
-            p1: Ref<'a, T0>,
-        ) -> Arg<u64> {
-            let p0 = p0.resolve_arg(builder);
-            let p1 = p1.resolve_arg(builder);
-            builder
-                .move_call(
-                    sui_transaction_builder::Function::new(
-                        PACKAGE_ID,
-                        Identifier::from_str(MODULE_NAME).unwrap(),
-                        Identifier::from_str("get_idx").unwrap(),
-                        vec![T0::type_()],
-                    ),
-                    vec![p0.into(), p1.into()],
-                )
-                .into()
-        }
-        pub fn get_idx_opt<'a, T0: MoveType>(
-            builder: &mut sui_transaction_builder::TransactionBuilder,
-            p0: Ref<'a, crate::sui::vec_set::VecSet<T0>>,
-            p1: Ref<'a, T0>,
-        ) -> Arg<Option<u64>> {
-            let p0 = p0.resolve_arg(builder);
-            let p1 = p1.resolve_arg(builder);
-            builder
-                .move_call(
-                    sui_transaction_builder::Function::new(
-                        PACKAGE_ID,
-                        Identifier::from_str(MODULE_NAME).unwrap(),
-                        Identifier::from_str("get_idx_opt").unwrap(),
-                        vec![T0::type_()],
-                    ),
-                    vec![p0.into(), p1.into()],
-                )
-                .into()
-        }
         pub fn insert<'a, T0: MoveType>(
             builder: &mut sui_transaction_builder::TransactionBuilder,
             p0: MutRef<'a, crate::sui::vec_set::VecSet<T0>>,
@@ -13602,6 +15641,23 @@ pub mod sui {
                         PACKAGE_ID,
                         Identifier::from_str(MODULE_NAME).unwrap(),
                         Identifier::from_str("keys").unwrap(),
+                        vec![T0::type_()],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn length<'a, T0: MoveType>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui::vec_set::VecSet<T0>>,
+        ) -> Arg<u64> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("length").unwrap(),
                         vec![T0::type_()],
                     ),
                     vec![p0.into()],

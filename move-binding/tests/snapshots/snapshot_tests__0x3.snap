@@ -3,7 +3,7 @@ source: move-binding/tests/snapshot_tests.rs
 expression: pretty
 ---
 pub mod sui_system {
-    pub const PACKAGE_VERSION: u64 = 22u64;
+    pub const PACKAGE_VERSION: u64 = 26u64;
     pub mod genesis {
         use std::str::FromStr;
         use move_binding_derive::{MoveStruct, Key};
@@ -332,6 +332,17 @@ pub mod sui_system {
                 0u8, 0u8, 0u8, 3u8,
             ]);
         }
+        #[derive(serde::Deserialize, serde::Serialize, Debug, MoveStruct)]
+        pub struct UnderflowSuiBalance {
+            pub dummy_field: bool,
+        }
+        impl UnderflowSuiBalance {
+            pub const TYPE_ORIGIN_ID: Address = Address::new([
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8,
+                0u8, 0u8, 0u8, 3u8,
+            ]);
+        }
         pub fn activate_staking_pool<'a>(
             builder: &mut sui_transaction_builder::TransactionBuilder,
             p0: MutRef<'a, crate::sui_system::staking_pool::StakingPool>,
@@ -390,6 +401,27 @@ pub mod sui_system {
                         vec![],
                     ),
                     vec![p0.into(), p1.into(), p2.into(), p3.into()],
+                )
+                .into()
+        }
+        pub fn calculate_rewards<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui_system::staking_pool::StakingPool>,
+            p1: Ref<'a, crate::sui_system::staking_pool::StakedSui>,
+            p2: Arg<u64>,
+        ) -> Arg<u64> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            let p2 = p2.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("calculate_rewards").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into(), p1.into(), p2.into()],
                 )
                 .into()
         }
@@ -1227,6 +1259,40 @@ pub mod sui_system {
                 )
                 .into()
         }
+        pub fn active_validator_addresses_ref<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui_system::sui_system::SuiSystemState>,
+        ) -> Arg<Vec<Address>> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("active_validator_addresses_ref").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn active_validator_voting_powers<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui_system::sui_system::SuiSystemState>,
+        ) -> Arg<crate::sui::vec_map::VecMap<Address, u64>> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("active_validator_voting_powers").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
         pub fn advance_epoch<'a>(
             builder: &mut sui_transaction_builder::TransactionBuilder,
             p0: Arg<crate::sui::balance::Balance<crate::sui::sui::SUI>>,
@@ -1262,6 +1328,25 @@ pub mod sui_system {
                         p0.into(), p1.into(), p2.into(), p3.into(), p4.into(), p5.into(),
                         p6.into(), p7.into(), p8.into(), p9.into()
                     ],
+                )
+                .into()
+        }
+        pub fn calculate_rewards<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui_system::sui_system::SuiSystemState>,
+            p1: Ref<'a, crate::sui_system::staking_pool::StakedSui>,
+        ) -> Arg<u64> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("calculate_rewards").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into(), p1.into()],
                 )
                 .into()
         }
@@ -1366,6 +1451,23 @@ pub mod sui_system {
                         PACKAGE_ID,
                         Identifier::from_str(MODULE_NAME).unwrap(),
                         Identifier::from_str("load_system_state_mut").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn load_system_state_ref<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui_system::sui_system::SuiSystemState>,
+        ) -> Ref<'a, crate::sui_system::sui_system_state_inner::SuiSystemStateInnerV2> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("load_system_state_ref").unwrap(),
                         vec![],
                     ),
                     vec![p0.into()],
@@ -3602,6 +3704,43 @@ pub mod sui_system {
                         PACKAGE_ID,
                         Identifier::from_str(MODULE_NAME).unwrap(),
                         Identifier::from_str("validator_staking_pool_mappings").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn validators<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: Ref<'a, crate::sui_system::sui_system_state_inner::SuiSystemStateInnerV2>,
+        ) -> Ref<'a, crate::sui_system::validator_set::ValidatorSet> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("validators").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into()],
+                )
+                .into()
+        }
+        pub fn validators_mut<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<
+                'a,
+                crate::sui_system::sui_system_state_inner::SuiSystemStateInnerV2,
+            >,
+        ) -> MutRef<'a, crate::sui_system::validator_set::ValidatorSet> {
+            let p0 = p0.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("validators_mut").unwrap(),
                         vec![],
                     ),
                     vec![p0.into()],
@@ -6639,6 +6778,25 @@ pub mod sui_system {
                         PACKAGE_ID,
                         Identifier::from_str(MODULE_NAME).unwrap(),
                         Identifier::from_str("validator_address_by_pool_id").unwrap(),
+                        vec![],
+                    ),
+                    vec![p0.into(), p1.into()],
+                )
+                .into()
+        }
+        pub fn validator_by_pool_id<'a>(
+            builder: &mut sui_transaction_builder::TransactionBuilder,
+            p0: MutRef<'a, crate::sui_system::validator_set::ValidatorSet>,
+            p1: Ref<'a, ObjectId>,
+        ) -> Ref<'a, crate::sui_system::validator::Validator> {
+            let p0 = p0.resolve_arg(builder);
+            let p1 = p1.resolve_arg(builder);
+            builder
+                .move_call(
+                    sui_transaction_builder::Function::new(
+                        PACKAGE_ID,
+                        Identifier::from_str(MODULE_NAME).unwrap(),
+                        Identifier::from_str("validator_by_pool_id").unwrap(),
                         vec![],
                     ),
                     vec![p0.into(), p1.into()],
