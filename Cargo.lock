@@ -418,6 +418,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f61dac84819c6588b558454b194026eb1f09c293b9036ae9b159e74e73ab6cf9"
 
 [[package]]
+name = "bytestring"
+version = "1.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "113b4343b5f6617e7ad401ced8de3cc8b012e73a594347c307b90db3e9271289"
+dependencies = [
+ "bytes",
+]
+
+[[package]]
 name = "cc"
 version = "1.2.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2975,8 +2984,8 @@ checksum = "734676eb262c623cec13c3155096e08d1f8f29adce39ba17948b18dad1e54142"
 
 [[package]]
 name = "sui-graphql-client"
-version = "0.0.5"
-source = "git+https://github.com/mystenlabs/sui-rust-sdk?rev=f0c8068#f0c8068f83475a14e10da5a27516e8ac8ac935b2"
+version = "0.0.7"
+source = "git+https://github.com/mystenlabs/sui-rust-sdk?rev=048124e484f14b9bf2a402227c9bc255c7621bc1#048124e484f14b9bf2a402227c9bc255c7621bc1"
 dependencies = [
  "anyhow",
  "async-stream",
@@ -2999,23 +3008,24 @@ dependencies = [
 
 [[package]]
 name = "sui-graphql-client-build"
-version = "0.0.5"
-source = "git+https://github.com/mystenlabs/sui-rust-sdk?rev=f0c8068#f0c8068f83475a14e10da5a27516e8ac8ac935b2"
+version = "0.0.7"
+source = "git+https://github.com/mystenlabs/sui-rust-sdk?rev=048124e484f14b9bf2a402227c9bc255c7621bc1#048124e484f14b9bf2a402227c9bc255c7621bc1"
 dependencies = [
  "cynic-codegen",
 ]
 
 [[package]]
 name = "sui-sdk-types"
-version = "0.0.5"
-source = "git+https://github.com/mystenlabs/sui-rust-sdk?rev=f0c8068#f0c8068f83475a14e10da5a27516e8ac8ac935b2"
+version = "0.0.7"
+source = "git+https://github.com/mystenlabs/sui-rust-sdk?rev=048124e484f14b9bf2a402227c9bc255c7621bc1#048124e484f14b9bf2a402227c9bc255c7621bc1"
 dependencies = [
  "base64ct",
  "bcs",
  "blake2",
  "bnum",
  "bs58 0.5.1",
- "hex",
+ "bytes",
+ "bytestring",
  "itertools 0.13.0",
  "roaring",
  "serde",
@@ -3027,8 +3037,8 @@ dependencies = [
 
 [[package]]
 name = "sui-transaction-builder"
-version = "0.0.5"
-source = "git+https://github.com/mystenlabs/sui-rust-sdk?rev=f0c8068#f0c8068f83475a14e10da5a27516e8ac8ac935b2"
+version = "0.0.7"
+source = "git+https://github.com/mystenlabs/sui-rust-sdk?rev=048124e484f14b9bf2a402227c9bc255c7621bc1#048124e484f14b9bf2a402227c9bc255c7621bc1"
 dependencies = [
  "base64ct",
  "bcs",
